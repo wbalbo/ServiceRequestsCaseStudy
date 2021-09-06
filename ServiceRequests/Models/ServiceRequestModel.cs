@@ -16,7 +16,7 @@ namespace ServiceRequests.Models
             Canceled
         }
 
-        public Guid Id { get; private set; } = new Guid();
+        public Guid Id { get; set; }
         public string BuildingCode { get; set; }
         public string Description { get; set; }
         public CurrentStatus Status { get; set; }
