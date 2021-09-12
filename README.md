@@ -1,9 +1,17 @@
 # ServiceRequestsCaseStudy
-A simple WebApi project to make CRUD operations for a service requests module.
+A simple WebApi project to make CRUD operations for a fictional service requests module.
 
-I created the API part but unfortunately, I struggled in the Web part, because since I have more experience with legacy projects (using Web Forms) than using Razor in .NET project,
-I couldn't create a good front end solution to consume the API part.
+Solution divided in 3 parts:
+- WebAPI part = with the creation of CRUD operations in the API
+- Unit Test part = with the unit tests (still need to be created)
+- Web part = with Razor pages and the Controllers calling the APIs methods
 
-Hopefully who that will analyze can understand that I'm just not used to use Razor syntax yet, but I certainly can learn and develop a better solution, given the time.
+Technologies used: 
+- .NET Core 3.1 with C#
+- xUnit framework to create unit tests
+- IMemoryCache class, to mimic database behavior
+- Bogus package to emulate fake data
+- NewtonSoft.Json package to make JSON conversion from API to the model
+- Bootstrap package, to make the layout not so ugly
 
-Anyway, here is my half project, thanks anyway.
+Thanks, any suggestions of improvement is highly acceptable.
