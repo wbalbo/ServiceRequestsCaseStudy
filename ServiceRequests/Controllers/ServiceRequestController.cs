@@ -32,12 +32,12 @@ namespace ServiceRequests.Controllers
         [HttpGet("{id}")]
         public ActionResult<ServiceRequestModel> GetById(Guid id)
         {
-            IEnumerable<ServiceRequestModel> requests = new ServiceRequestRepository(_memoryCache).GetById(id);
+            ServiceRequestModel request = new ServiceRequestRepository(_memoryCache).GetById(id);
 
-            if (requests == null)
+            if (request == null)
                 return NotFound();
 
-            return Ok(requests);
+            return Ok(request);
         }
 
         [HttpPost]

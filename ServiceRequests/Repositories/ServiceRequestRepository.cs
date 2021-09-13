@@ -35,7 +35,7 @@ namespace ServiceRequests.Repositories
             return serviceRequests;
         }
 
-        public IEnumerable<ServiceRequestModel> GetById(Guid id)
+        public ServiceRequestModel GetById(Guid id)
         {
             var serviceRequest = _cache.GetOrCreate("ServiceRequests_GetById_" + id, entry =>
             {
@@ -43,7 +43,7 @@ namespace ServiceRequests.Repositories
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300);
                 entry.SetPriority(CacheItemPriority.High);
 
-                return _data.Where(d => d.Id == id && d.Status != ServiceRequestModel.CurrentStatus.Canceled);
+                return _data.FirstOrDefault(d => d.Id == id && d.Status != ServiceRequestModel.CurrentStatus.Canceled);
             });
 
             return serviceRequest;
