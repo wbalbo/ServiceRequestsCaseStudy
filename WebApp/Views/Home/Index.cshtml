@@ -3,8 +3,9 @@
 
 <h2>Service Requests</h2>
 <br />
-<a asp-action="AddServiceRequests" class="btn btn-sm btn-primary">Add Service Request</a>
+<a asp-action="AddServiceRequest" class="btn btn-sm btn-primary">Add Service Request</a>
 <a asp-action="GetServiceRequest" class="btn btn-sm btn-secondary">Get Service Request</a>
+<br />
 
 <table class="table table-sm table-striped table-bordered m-2">
     <thead>
@@ -29,17 +30,17 @@
                     <td>@r.Status</td>
                     <td align="center">
                         <a asp-action="UpdateServiceRequest" asp-route-id="@r.Id">
-                            <img class="btn btn-dark" />
+                            <img class="btn btn-dark" />Update
                         </a>
                     </td>
                     <td align="center">
                         <form asp-action="DeleteServiceRequest" method="post">
                             <input type="hidden" value="@r.Id" name="Id" />
-                            <input type="image" class="btn btn-danger" />
+                            <input type="image" class="btn btn-outline-warning" />
                         </form>
                     </td>
                 </tr>
             }
         }
-        </tbody>
-    </table>
+    </tbody>
+</table>

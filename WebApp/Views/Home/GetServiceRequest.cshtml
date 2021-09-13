@@ -1,0 +1,35 @@
+﻿@model ServiceRequests.Models.ServiceRequestModel
+@{ Layout = "_Layout"; ViewBag.Title = "Get Service Request by Id";}
+
+<h2>Service Request by Id <a asp-action="Index" class="btn btn-sm btn-primary">Back</a></h2>
+<h3>@ViewBag.StatusCode</h3>
+<form method="post">
+    <div class="form-group">
+        <label for="id">Id:</label>
+        <input class="form-control-sm" name="id" />
+    </div>
+    <div class="text-center panel-body">
+        <button type="submit" class="btn btn-sm btn-primary">Search</button>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    <h2>Service Request</h2>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>Building Code</th>
+                <th>Description</th>
+                <th>Created By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.BuildingCode</td>
+                <td>@Model.Description</td>
+                <td>@Model.CreatedBy</td>
+            </tr>
+        </tbody>
+    </table>
+}
