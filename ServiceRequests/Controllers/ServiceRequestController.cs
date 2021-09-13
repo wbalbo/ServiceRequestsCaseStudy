@@ -22,6 +22,9 @@ namespace ServiceRequests.Controllers
         public ActionResult<List<ServiceRequestModel>> GetAll()
         {
             List<ServiceRequestModel> requests = new ServiceRequestRepository(_memoryCache).GetAll();
+
+            if (requests.Count == 0)
+                return NoContent();
             
             return Ok(requests);
         }
@@ -30,7 +33,10 @@ namespace ServiceRequests.Controllers
         public ActionResult<ServiceRequestModel> GetById(Guid id)
         {
             IEnumerable<ServiceRequestModel> requests = new ServiceRequestRepository(_memoryCache).GetById(id);
-                        
+
+            if (requests == null)
+                return NotFound();
+
             return Ok(requests);
         }
 
@@ -38,16 +44,36 @@ namespace ServiceRequests.Controllers
         public ActionResult CreateServiceRequest(ServiceRequestModel model)
         {
             var requests = new ServiceRequestRepository(_memoryCache);
-            requests.CreateServiceRequest(model);
+            try
+            {                
+                bool wasCreated = requests.CreateServiceRequest(model);
 
-            return Created("New service request", model);
+                if (!wasCreated)
+                    return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            return Created("New service request", model.Id);
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateServiceRequest(Guid id)
         {
             var requests = new ServiceRequestRepository(_memoryCache);
-            requests.UpdateServiceRequest(id);
+            try
+            {
+                bool wasUpdated = requests.UpdateServiceRequest(id);
+
+                if (!wasUpdated)
+                    return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
+            }
 
             return Ok(requests);
         }
@@ -56,9 +82,12 @@ namespace ServiceRequests.Controllers
         public ActionResult DeleteServiceRequest(Guid id)
         {
             var requests = new ServiceRequestRepository(_memoryCache);
-            requests.DeleteServiceRequest(id);
+            bool wasDeleted = requests.DeleteServiceRequest(id);
 
-            return Ok(requests);
+            if (!wasDeleted)
+                return NotFound();
+
+            return Created("Service request removed", id);
         }
     }
 }

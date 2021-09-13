@@ -17,6 +17,8 @@ namespace ServiceRequests.Repositories
 
             if (_data != null)
                 return;
+
+            _data = new List<ServiceRequestModel>();
         }
 
         public List<ServiceRequestModel> GetAll()
@@ -27,7 +29,7 @@ namespace ServiceRequests.Repositories
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300); // time to cache to expire, from now (5 minutes)
                 entry.SetPriority(CacheItemPriority.High);
 
-                return _data;
+                return _data.Where(d=> d.Status != ServiceRequestModel.CurrentStatus.Canceled).ToList();
             });
 
             return serviceRequests;
@@ -41,18 +43,22 @@ namespace ServiceRequests.Repositories
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(300);
                 entry.SetPriority(CacheItemPriority.High);
 
-                return _data.Where(d => d.Id == id);
+                return _data.Where(d => d.Id == id && d.Status != ServiceRequestModel.CurrentStatus.Canceled);
             });
 
             return serviceRequest;
         }
 
-        public void CreateServiceRequest(ServiceRequestModel model)
+        public bool CreateServiceRequest(ServiceRequestModel model)
         {
+            int _listCount = _data.Count;            
+
             _data.Add(model);
+
+            return _data.Count > _listCount;
         }
 
-        public void DeleteServiceRequest(Guid id)
+        public bool DeleteServiceRequest(Guid id)
         {
             var model = _data.Find(f => f.Id == id);
 
@@ -62,10 +68,13 @@ namespace ServiceRequests.Repositories
 
                 model.Status = ServiceRequestModel.CurrentStatus.Canceled;
                 _data.Add(model);
+                return true;
             }
+            else
+                return false;
         }
 
-        public void UpdateServiceRequest(Guid id)
+        public bool UpdateServiceRequest(Guid id)
         {
             var model = _data.Find(f => f.Id == id);
 
@@ -75,7 +84,10 @@ namespace ServiceRequests.Repositories
 
                 model.Status = ServiceRequestModel.CurrentStatus.InProgress;
                 _data.Add(model);
+                return true;
             }
+            else
+                return false;
         }
     }
 }
